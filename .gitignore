@@ -1,0 +1,15 @@
+# Carpetas
+__pycache/
+venv/
+env/
+.venv/
+env.bak/
+*.egg-info/
+
+# Archivos
+*.py[cod]
+*.log
+*.swp
+*.swo
+.DS_Store
+.ipynb_checkpoints/
