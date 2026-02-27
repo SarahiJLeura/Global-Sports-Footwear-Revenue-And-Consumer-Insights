@@ -17,16 +17,35 @@
 \usepackage{booktabs}
 
 % Links
+\usepackage[hyphens]{url}
 \usepackage{hyperref}
+\hypersetup{breaklinks=true}
 
 % Bibliography
 \usepackage[numbers]{natbib}
+
+\usepackage{tabularx}  % Para controlar ancho de columnas
+\usepackage{array}     % Para definir columnas personalizadas
+
+% Alinear flotantes respecto al punto
+\usepackage{siunitx}
+\sisetup{
+    detect-weight=true,
+    detect-inline-weight=math,
+    table-format=3.6
+}
+
+\usepackage{float}
+\usepackage{placeins}
+
+% Poder cortar la tabla 
+\usepackage{longtable}
 
 % Line spacing
 \setstretch{1.15}
 
 %%%%%% Title %%%%%%
-\title{\textbf{Predicting Revenue and Analyzing Consumer Behavior in Global Sports Footwear Sales (2018--2026)}}
+\title{\textbf{Predicting Product Demand in the Global Sports Footwear Market (2018--2026)}}
 
 %%%%%% Autor %%%%%%
 \author{
@@ -47,38 +66,555 @@ Professor: PhD.\ Jose Ignacio Nuñez Varela
 \thispagestyle{empty}   % Removes page number from cover
 \newpage
 
-% Section 1: Overview of project
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 1: Overview of project (Introduction)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
-Your introduction starts here \cite{footwear2026}.
+This project focuses on predicting the number of units sold for sports footwear products using historical transactional data from 2018 to 2026. The task is formulated as a supervised learning regression problem, where the target variable is discrete. By applying the Knowledge Discovery in Databases (KDD) methodology, the project aims to systematically select, preprocess, transform, and analyze the data to build predictive models capable of capturing the relationships between pricing, discounts, brand, customer characteristics, sales channels, and demand.
 
-\subsection{Problem description}
-Explain what you are trying to analyze; a general description, but it
-should provide a good sense of what the problem is. Also, it should contain the description of the task to be solved (i.e., classification, regression, clustering, etc.).
+The ultimate objective is to develop a demand regression model that can support decision-making processes in inventory planning, pricing optimization, and marketing strategy within the sports footwear industry.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.1. Domain explanation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Domain explanation}
-Depending on the project, you may need to explain the domain or some background of the project so that it is understandable.
+
+People are also increasingly realizing the importance of using the appropriate type of shoes for sports activities. As a result, the demand for athletic shoes is expected to register a sharp rise over the coming years. The demand for athletic footwear products is increasing rapidly owing to their usage in various conditions. Athletic footwear products are used by various consumers such as athletes and climbers. In addition, there are fitness-conscious customers, gym-goers, and people who use them for mild fitness routines. Various types of athletic footwear available in the market are prepared from high-quality raw types, such as leather, foam, and plastic, which involve the use of advanced chemical additives \cite{grandview_athletic_footwear_2024}.
+
+The global sports footwear market is dominated by major brands such as: Nike, Adidas, Pumas, Reebok, ASICS, New Balance. The demand in industry is influenced by multiple factors:
+\begin{itemize}
+  \item Pricing strategies
+  \item Promotional discounts
+  \item Consumer income level
+  \item Sales channel (online vs retail)
+  \item Brand
+  \item Product category
+  \item Gender
+  \item Country
+\end{itemize}
+
+Understanding these relationships allows companies to improve revenue and reduce overstock or understock situations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.2. Problem description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Problem description}
+
+The objective of this project is to predict the number of units sold of sports footwear products using historical transactional data. The dataset includes information about pricing, discounts, brand, sales channel, customer income level, and product ratings. The dataset cover information from 2018 to 2026.
+
+Accurate demand prediction is crucial in the retail industry because it allows companies to optimize inventory management, pricing strategies, and promotional campaigns. This project focuses on a supervised learning regression task, where the target variable is discrete (number of units sold).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.3. KDD Methodology
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{KDD methodology}
-Brief description of the Knowledge Discovery in Databases steps.
+Knowledge Discovery in Databases (KDD) is the overall process of discovering useful patterns and knowledge from large volumes of data \cite{kdd_process}. The main idea is make better decisions (See Figure~\ref{fig:kdd_process}).
+\begin{enumerate}
+  \item \textbf{Data selection.} Involves choosing relevant data from one or more sources according to the problem.
+  \item \textbf{Data Preprocessing.} The selected data is cleaned and prepared by handling missing values, noise, and inconsistencies to improve its quality. 
+  \item \textbf{Data transformation.} The cleaned data is converted or consolidated into suitable formats or structures that will be analyzed.
+  \item \textbf{Data mining.} This is the core task where algorithms are applied to extract patterns, relationships, or models from transformed data.
+  \item \textbf{Interpretation and Evaluation.} The results obtained from data mining are examined and interpreted to determine their usefulness and relevance. Also, retrieve insights.
+\end{enumerate}
 
-% Section 2: Dataset
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/kdd.png}
+    \caption{Outline of the Steps of the KDD Process}
+    \label{fig:kdd_process}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 2: DATASET
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Dataset}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.1. Data selection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Data selection}
-Description of how the data set to be used was obtained and selected.
+
+The dataset used in this project was obtained from Kaggle and contains more than 30,000 records of global sports footwear sales covering the period from 2018 to 2026 \cite{footwear2026}. It includes transactional and product-level information such as price, discount percentage, brand, product category, sales channel (online or retail), customer income level, country, gender, product ratings, and the number of units sold.
+
+This dataset was selected because it closely reflects real-world retail data structures and contains a diverse set of explanatory variables that influence demand. Additionally, the combination of numerical and categorical features makes it well-suited for supervised learning regression tasks, enabling the development and evaluation of predictive models for demand forecasting.
+
+The dataset provides sufficient variability and scale to support robust model training, validation, and testing, making it appropriate for applying the Knowledge Discovery in Databases (KDD) methodology described earlier.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.2. Data description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Dataset description}
-In-depth description of the dataset to be used.
+
+The dataset consists of transactional-level sales records from the global sports footwear market covering the period 2018--2026. Each row represents a single purchase transaction and contains product, pricing, customer, sales channel, and financial information associated with that transaction. The dataset integrates both categorical and numerical attributes, allowing the modeling of complex relationships that influence product demand.
+
+From a structural perspective, the dataset can be grouped into five main categories of variables:
+
+\begin{itemize}
+    \item \textbf{Product Information:} Includes attributes that describe the physical and commercial characteristics of the footwear product. These variables are \textit{brand}, \textit{model\_name}, \textit{category}, \textit{gender}, \textit{size}, and \textit{color}.
+    
+    \item \textbf{Pricing Information:} Contains monetary attributes related to pricing strategy, namely \textit{base\_price\_usd}, \textit{discount\_percent}, and \textit{final\_price\_usd}.
+    
+    \item \textbf{Customer Information:} Includes socio-economic and behavioral indicators such as \textit{customer\_income\_level}, \textit{customer\_rating}, and \textit{country}.
+    
+    \item \textbf{Sales Channel Information:} Comprises \textit{sales\_channel} and \textit{payment\_method}, which describe how and where the transaction occurred.
+    
+    \item \textbf{Financial Metrics:} The attribute \textit{revenue\_usd} represents the total revenue generated per transaction. This variable is directly related to \textit{units\_sold} and \textit{final\_price\_usd}.
+\end{itemize}
+
+The target variable of the study is:
+
+\begin{itemize}
+    \item \textbf{Units Sold:} A discrete numerical variable representing the number of footwear units purchased in a single transaction. Although integer-valued (ranging from 1 to 4), it is modeled as a continuous regression target because it represents quantity demand.
+\end{itemize}
+
+Overall, the dataset presents a multivariate structure with mixed data types, moderate dimensionality (18 attributes), and balanced categorical distributions. The combination of product-level, pricing, customer, and channel-related variables makes it suitable for supervised learning regression models.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.3. Attributes description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Attributes description}
-List of all attributes, their description, and values.
+
+\begin{longtable}{|>{\bfseries}p{0.5cm}|>{\bfseries}p{2.0cm}|p{4cm}|p{3cm}|p{4cm}|}
+
+\caption{Attributes in the Global Sports Footwear Market}
+\label{tab:attributes} \\
+
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Description} & \textbf{Type} & \textbf{Possible Values} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Description} & \textbf{Type} & \textbf{Possible Values} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & Order ID & Unique ID for each sale & Categorical (Ordinal) & ORD100000 to ORD129999 \\
+\hline
+2 & Order Date & Date when the order was placed & Categorical (Nominal) & 01/01/2018 to 12/31/2026 \\
+\hline
+3 & Brand & Brand of the product sold & Categorical (Nominal) & Nike, Adidas, Puma, Reebok, ASICS, New Balance \\
+\hline
+4 & Model Name & Specific model of the shoe & Categorical (Nominal) & Mod-100 to Mod-999 \\
+\hline
+5 & Category & Sport activity in which the footwear will be used & Categorical (Nominal) & Running, Training, Basketball, Lifestyle, Gym \\
+\hline
+6 & Gender & Target gender for the product & Categorical (Nominal) & Male, Female, Unisex \\
+\hline
+7 & Size & Size of the product & Numerical (Discrete) & 6 to 11 \\
+\hline
+8 & Color & Color of the product & Categorical (Nominal) & Red, Blue, Black, White, Grey \\
+\hline
+9 & Base Price (USD) & Price before discount (Original price) & Numerical (Discrete) & 60 to 219 \\
+\hline
+10 & Discount Percent & Discount applied & Numerical (Discrete) & 0\% to 30\% \\
+\hline
+11 & Final Price & Price after discount & Numerical (Discrete) & 42 to 219 \\
+\hline
+12 & Units Sold & Number of units sold & Numerical (Discrete) & 1 to 4 \\
+\hline
+13 & Revenue (USD) & Total revenue generated & Numerical (Discrete) & 42 to 876 \\
+\hline
+14 & Payment Method & Method of payment used & Categorical (Nominal) & Card, Cash, Wallet, Bank Transfer \\
+\hline
+15 & Sales Channel & Where the sale happened & Categorical (Nominal) & Online, Retail Store \\
+\hline
+16 & Country & Country of sale & Categorical (Nominal) & USA, UK, India, Germany, UAE, Pakistan \\
+\hline
+17 & Customer Income Level & Income bracket of customer & Categorical (Ordinal) & Low, Medium, High \\
+\hline
+18 & Customer Rating & Average rating given by customer & Numerical (Discrete) & 3 to 5 \\
+\hline
+
+\end{longtable}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.4. Statistical analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Statistical analysis}
-Analysis of the dataset in general, and for each attribute.
+
+The dataset contains 30,000+ records and 18 attributes. Among these variables, 7 are numerical and 11 are categorical. The target variable, Units Sold, is discrete numerical with values ranging from 1 to 4. The analysis is therefore divided into numerical and categorical perspectives, using Python and Orange as primary analytical tools.
+
+% 2.4.1. Numerical variables
+
+\subsubsection{Numerical Variables}
+
+For the numerical attributes, descriptive statistics were calculated, including measures of central tendency (mean, median) dispersion (standard deviation, minimum, maximum), and skewness inferred from the relative position of mean and median. Table~\ref{tab:statistics_numeric} summarizes these findings.
+
+\begin{table}[H]
+\centering
+\caption{Descriptive statistics of the numeric attributes}
+\label{tab:statistics_numeric}
+
+\begin{tabular}{
+|>{\bfseries}c
+|>{\bfseries}p{3cm}
+|S[table-format=3.6]
+|S[table-format=3.1]
+|S[table-format=3.6]
+|S[table-format=3.1]
+|S[table-format=3.1]|}
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Mean} & \textbf{Median} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
+\hline
+1 & Size & 8.500867 & 9.0 & 1.710896 & 6.0 & 11.0 \\
+\hline
+2 & Base Price (USD) & 139.634633 & 140.0 & 46.062549 & 60.0 & 219.0 \\
+\hline
+3 & Discount Percent & 13.332167 & 10.0 & 9.864198 & 0.0 & 30.0 \\
+\hline
+4 & Final Price (USD) & 121.029035 & 119.2 & 42.511586 & 42.0 & 219.0 \\
+\hline
+5 & Units Sold & 2.500200 & 3.0 & 1.121149 & 1.0 & 4.0 \\
+\hline
+6 & Revenue (USD) & 302.714948 & 268.2 & 179.149272 & 42.0 & 876.0 \\
+\hline
+7 & Customer Rating & 4.001543 & 4.0 & 0.577546 & 3.0 & 5.0 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+The Figure~\ref{fig:size}--\ref{fig:customer_rating}. shows the frequency of numeric attributes. A distribution is considered \textbf{symmetric} if mean $\approx$ median $\approx$ mode; \textbf{positively skewed} (right-skewed) if mean $>$ median; \textbf{negatively skewed} (left-skewed) if mean $<$ median \cite{geeksforgeeks_skewness_2024}.
+
+\paragraph{Size}
+The Figure~\ref{fig:size} shows a distribution close to being symmetric. The mean (8.50) is slightly lower than the median (9.00), suggesting a mild negative skewed. The relatively low standard deviation (1.71) and narrow range (6 to 11) indicate limited variability.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/size_analysis.png}
+    \caption{Distribution of Size visualized with a histogram (left) and a box plot (right).}
+    \label{fig:size}
+\end{figure}
+
+\paragraph{Base Price (USD)}
+You can see in the following Figure~\ref{fig:base_price} an approximately symmetric distribution, also the closeness of mean (139.63) and median (140.00) indicates no strong skewness.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/base_price_usd_analysis.png}
+    \caption{Distribution of Base Price visualized with a histogram (left) and a box plot (right).}
+    \label{fig:base_price}
+\end{figure}
+
+\paragraph{Discount Percent}
+The mean (13.33) is greater than median (10.00) indicates a positively skewed. As shown in Figure~\ref{fig:discount_percent}, the difference is not clearly visible on the histogram; however, the boxplot reveals that more data extend from the median to the upper limit.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/discount_percent_analysis.png}
+    \caption{Distribution of Discount Percent visualized with a histogram (left) and a box plot (right).}
+    \label{fig:discount_percent}
+\end{figure}
+
+
+\paragraph{Final Price (USD)}
+The mean (121.03) is slightly greater than median (119.20), so we can say that it is a slight positive skewness, and we can verify this by looking the Histogram at Figure~\ref{fig:final_price}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/final_price_usd_analysis.png}
+    \caption{Distribution of Final Price visualized with a histogram (left) and a box plot (right).}
+    \label{fig:final_price}
+\end{figure}
+
+\paragraph{Units Sold}
+Although the mean (2.50) is slightly lower than the median (3.00), suggesting negative skew, this variable only takes integer values between 1 and 4. The low variability and restricted range indicate that sales volume per product is highly concentrated.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/units_sold_analysis.png}
+    \caption{Distribution of Units sold visualized with a histogram (left) and a box plot (right).}
+    \label{fig:units_sold}
+\end{figure}
+
+\paragraph{Revenue (USD)}
+As shown in Figure~\ref{fig:revenue} indicates a positively skewed distribution, it is certain because the mean (302.71) is greater than the median (268.20). The large range (42 to 876) and high standard deviation (179.15) confirm substantial variability.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/revenue_usd_analysis.png}
+    \caption{Distribution of Revenue visualized with a histogram (left) and a box plot (right).}
+    \label{fig:revenue}
+\end{figure}
+
+
+\paragraph{Customer Rating}
+The mean (4.00) and median (4.00) are identical, indicating an approximately symmetric distribution. However, the variable is bounded between 3 and 5, limiting the possibility of extreme skewness. The relatively small standard deviation indicates low dispersion. See Figure~\ref{fig:customer_rating}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/customer_rating_analysis.png}
+    \caption{Distribution of Customer Rating visualized with a histogram (left) and a box plot (right).}
+    \label{fig:customer_rating}
+\end{figure}
+
+
+% 2.4.2. Categorical variables
+
+\subsubsection{Categorical Variables}
+
+This subsection analyzes the distribution and potential predictive relevance of the categorical variables presented in Tables~\ref{tab:brand_dist}--\ref{tab:customer_income_dist}. Understanding these distributions is essential within the KDD framework, as categorical attributes may significantly influence demand patterns and interaction effects in the regression task. We will skip Order Date and Order Id and Model Name, in consequence we will work with only 8 attributes. 
+
+\begin{itemize}
+    \item \textbf{Brand.} Table~\ref{tab:brand_dist} shows that the distribution is uniform ($\approx$16–17\% per brand).
+    
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Brand}
+    \label{tab:brand_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Brand & ASICS & 5132 & 17.11 \\
+    \hline
+    2 & Brand & Reebok & 5026 & 16.75  \\
+    \hline
+    3 & Brand & Nike & 5018 & 16.73 \\
+    \hline
+    4 & Brand & New Balance & 4982 & 16.61  \\
+    \hline
+    5 & Brand & Puma & 4924 & 16.41  \\
+    \hline
+    6 & Brand & Adidas & 4918 & 16.39  \\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+    
+    \item \textbf{Category.} As shown in Table~\ref{tab:category_dist}, product categories are evenly distributed ($\approx$20\% each).
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Category}
+    \label{tab:category_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Category & Basketball & 6074 & 20.25 \\
+    \hline
+    2 & Category & Lifestyle & 6059 & 20.20  \\
+    \hline
+    3 & Category & Training & 6018 & 20.06 \\
+    \hline
+    4 & Category & Running & 5983 & 19.94  \\
+    \hline
+    5 & Category & Gym & 5866 & 19.55  \\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+    
+    \item \textbf{Gender.} Table~\ref{tab:gender_dist} indicates a nearly equal distribution among Men (33.58\%), Women (33.52\%), and Unisex (32.89\%).
+    
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Gender}
+    \label{tab:gender_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Gender & Men & 10075 & 33.58 \\
+    \hline
+    2 & Gender & Women & 10057 & 33.520  \\
+    \hline
+    3 & Gender & Unisex  & 9868 & 32.89\\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+
+    \item \textbf{Color.} According to Table~\ref{tab:color_dist}, colors are uniformly distributed ($\approx$20\% each). While color alone may not strongly impact sales volume, it could generate interaction effects with Category or Gender. 
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Color}
+    \label{tab:color_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Color & Grey & 6046 & 20.15 \\
+    \hline
+    2 & Color & Red & 6046 & 20.15  \\
+    \hline
+    3 & Color & Blue & 5976 & 19.92\\
+    \hline
+    3 & Color & Black & 5972 & 19.91\\
+    \hline
+    3 & Color & White & 5960 & 19.87\\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+
+    \item \textbf{Payment Method.} Table~\ref{tab:payment_dist} shows a slightly preference for Transfer and Wallet, but overall balanced. It may correlate with Sales Channel and Income Level, indirectly affecting purchasing behavior.
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Payment Method}
+    \label{tab:payment_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Payment Method & Transfer & 7686 & 25.62 \\
+    \hline
+    2 & Payment Method & Wallet & 7554 & 25.18 \\
+    \hline
+    3 & Payment Method & Card & 7448 & 24.83\\
+    \hline
+    3 & Payment Method & Cash & 7312 & 24.37\\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+    
+    \item \textbf{Sales Channel.} As presented in Table~\ref{tab:channel_dist}, nearly a 50/50 split between Retail Store and Online. This is a key variable for comparing consumer behavior and analyzing interactions with Discount and Final Price.
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Sales channel}
+    \label{tab:channel_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Sales channel & Retail Store & 15009 & 50.03\\
+    \hline
+    2 & Sales channel & Online & 14991 & 49.97  \\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+
+    
+    \item \textbf{Country.} Table~\ref{tab:country_dist} demonstrates a balanced geographic representation ($\approx$16–17\% each country). This enables cross-country demand analysis and may capture differences in price sensitivity and consumer preferences.
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Brand}
+    \label{tab:country_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Country & UAE & 5118 & 17.06 \\
+    \hline
+    2 & Country & UK & 5058 & 16.86  \\
+    \hline
+    3 & Country & USA & 5027 & 16.76 \\
+    \hline
+    4 & Country & India & 4991 & 16.64  \\
+    \hline
+    5 & Country & Germany & 4965 & 16.55  \\
+    \hline
+    6 & Country & Pakistan & 4841 & 16.14  \\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+
+    \item \textbf{Customer Income Level.} Finally, Table~\ref{tab:customer_income_dist} reveals a similar distribution among High, Medium, and Low income groups. I supposed that customer evaluates the aspects of footwear as quality. 
+
+    \begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Customer Income Level}
+    \label{tab:customer_income_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Customer Income Level & High & 10059 & 33.53 \\
+    \hline
+    2 & Customer Income Level & Medium & 9997 & 33.32  \\
+    \hline
+    3 & Customer Income Level & Low  & 9944 & 33.15 \\
+    \hline
+    \end{tabular}
+    
+    \end{table}
+
+\end{itemize}
+
 
 \subsection{Final comments}
-Conclusions about the analysis made on the dataset.
+
+Across all categorical attributes, the dataset exhibits a highly balanced structure. This suggests that the data was designed to minimize class imbalance issues and to facilitate machine learning experimentation. From a KDD perspective, this balance simplifies preprocessing steps (e.g., encoding) and improves the stability of regression models during cross-validation.
+
+While individual categorical variables may have moderate isolated effects on Units Sold, their interaction effects with pricing variables, discounts, and income levels are expected to be more influential.
+
+\subsection*{Code Availability}
+The complete implementation and experiments are available at:
+\url{https://colab.research.google.com/drive/1g1eIO1kwRSmHdVFq0CkI0VWVZmeMzZSn?usp=sharing}
 
 % References
 
