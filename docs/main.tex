@@ -6,6 +6,928 @@
 % Page layout
 \usepackage[margin=1.25in]{geometry}
 \usepackage{setspace}
+\documentclass[12pt]{article}
+
+% Encoding
+\usepackage[utf8]{inputenc}
+
+% Page layout
+\usepackage[margin=1.25in]{geometry}
+\usepackage{setspace}
+
+% Graphics and figures
+\usepackage{graphicx}
+\usepackage{subcaption}
+\graphicspath{{./figures/}}
+
+% Math and tables
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+% Links
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\hypersetup{breaklinks=true}
+
+% Bibliography
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\usepackage{tabularx}  % Para controlar ancho de columnas
+\usepackage{array}     % Para definir columnas personalizadas
+
+% Alinear flotantes respecto al punto
+\usepackage{siunitx}
+\sisetup{
+    detect-weight=true,
+    detect-inline-weight=math,
+    table-format=3.6
+}
+
+\usepackage{float}
+\usepackage{placeins}
+
+% Poder cortar la tabla 
+\usepackage{longtable}
+
+% Line spacing
+\setstretch{1.15}
+
+%%%%%% Title %%%%%%
+\title{\textbf{Predicting Product Demand in the Global Sports Footwear Market (2018--2026)}}
+
+%%%%%% Autor %%%%%%
+\author{
+Jimenez Leura Patricia Sarahi \\
+Student ID: 355963 \\
+Intelligent Systems Engineering \\
+School of Engineering, Computer Science Department \\
+Autonomous University of San Luis Potosi \\
+Data Science -- Group 280801 \\
+Professor: PhD.\ Jose Ignacio Nuñez Varela
+}
+
+\date{May 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}   % Removes page number from cover
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 1: Overview of project (Introduction)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.1. Problem description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem description}
+
+The objective of this project is to predict the number of units sold of sports footwear products using historical transactional data from 2018 to 2026. The dataset contains approximately 30,000 records with information related to product characteristics, pricing, discounts, customer demographics, sales channels, and temporal variables.
+
+Demand prediction is an important challenge in the retail industry because accurate forecasts help companies optimize inventory management, reduce operational costs, improve supply chain efficiency, and increase profitability. Incorrect predictions may lead to overstock or understock situations, affecting both costs and customer satisfaction.
+
+This project addresses a supervised machine learning regression problem, where the target variable is to predict the number of units sold. Several regression models were evaluated, including Decision Tree Regression, Random Forest Regression, and Gradient Boosting Regression, to compare their predictive performance.
+
+In addition, feature selection techniques such as Pearson Correlation and Mutual Information were applied to identify the variables that contribute most significantly to predicting product demand in the sports footwear market.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.2. Domain explanation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Domain explanation}
+
+The global footwear industry represents one of the largest and fastest-growing segments within the fashion and sportswear markets. In particular, the athletic footwear sector has experienced sustained growth due to increasing consumer interest in sports participation, health awareness, fitness activities, and lifestyle-oriented fashion trends. Athletic shoes are no longer used exclusively for professional sports; they have become part of everyday casual wear, especially among younger consumers and fitness-conscious populations \cite{grandview_athletic_footwear_2024}.
+
+According to recent market reports, the athletic footwear market is expected to continue expanding over the next several years due to the growing popularity of running, gym training, outdoor activities, and athleisure fashion trends. The industry is also influenced by technological innovations in shoe materials, cushioning systems, lightweight manufacturing, and sustainable product development. Companies increasingly invest in advanced materials such as engineered foam, synthetic fabrics, and recycled components in order to improve product performance and consumer comfort \cite{grandview_athletic_footwear_2024}.
+
+The global market is highly competitive and dominated by internationally recognized brands such as Nike, Adidas, Puma, Reebok, ASICS, Skechers, and New Balance. These companies compete not only through product quality and innovation, but also through marketing strategies, athlete sponsorships, celebrity collaborations, and digital commerce expansion. Brand reputation and customer loyalty therefore play a major role in consumer purchasing behavior within the footwear industry \cite{footwear_brands_2025}.
+
+In recent years, online sales channels have significantly transformed the footwear market. E-commerce platforms allow companies to reach global customers more efficiently while also generating large amounts of transactional and behavioral data. At the same time, traditional retail stores remain relevant because many customers still prefer physical product evaluation before purchasing footwear products. As a result, businesses must continuously optimize inventory management, pricing strategies, and sales forecasting across both online and offline channels.
+
+The footwear industry is influenced by multiple business and consumer-related factors, including: pricing strategies, promotional discounts, consumer income level, sales channel (online vs retail), brand reputation, product category, gender and demographic preferences, geographic and demographic preferences, geographic location and country-specific demand, season and fashion trends, customer satisfaction and product ratings.
+
+From a data mining perspective, predicting product sales in the footwear market is a complex problem because consumer behavior is affected by both measurable variables and external market dynamics. Demand may fluctuate due to trends, marketing campaigns, product launches, influencer promotion, economic conditions, or seasonal events. Consequently, machine learning techniques can be useful for identifying hidden patterns in transactional data and improving demand forecasting processes.
+
+In this study, the objective is to analyze transactional data related to sports footwear sales in order to predict the number of units sold using machine learning regression models. By identifying which attributes contribute most significantly to sales behavior, companies can potentially improve inventory planning, optimize pricing decisions, and reduce overstock or understock situations.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 1.3. KDD Methodology
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{KDD methodology}
+Knowledge Discovery in Databases (KDD) is the overall process of discovering useful patterns and knowledge from large volumes of data \cite{kdd_process}. The main idea is make better decisions (See Figure~\ref{fig:kdd_process}).
+\begin{enumerate}
+  \item \textbf{Data selection.} Involves choosing relevant data from one or more sources according to the problem.
+  \item \textbf{Data Preprocessing.} The selected data is cleaned and prepared by handling missing values, noise, and inconsistencies to improve its quality. 
+  \item \textbf{Data transformation.} The cleaned data is converted or consolidated into suitable formats or structures that will be analyzed.
+  \item \textbf{Data mining.} This is the core task where algorithms are applied to extract patterns, relationships, or models from transformed data.
+  \item \textbf{Interpretation and Evaluation.} The results obtained from data mining are examined and interpreted to determine their usefulness and relevance. Also, retrieve insights.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{img/kdd.png}
+    \caption{Outline of the Steps of the KDD Process taken from\cite{kdd_process}.}
+    \label{fig:kdd_process}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% SECTION 2: DATASET
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Dataset}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.1. Data selection
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Data selection}
+
+The dataset used in this project was obtained from Kaggle and contains 30,000 records of global sports footwear sales covering the period from 2018 to 2026 \cite{footwear2026}. It includes transactional and product-level information such as price, discount percentage, brand, product category, sales channel (online or retail), customer income level, country, gender, product ratings, and the number of units sold. It is not yet clear whether the dataset is synthetic, but this will become clearer in the next stages.
+
+The combination of numerical and categorical features makes it well-suited for supervised learning regression tasks, enabling the development and evaluation of predictive models for demand forecasting.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.2. Data description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Dataset Description}
+
+The dataset contains 18 attributes. Each row represents a purchase transaction and includes product, pricing, customer, sales channel, and financial information related to footwear demand.
+
+The variables can be grouped into five categories:
+
+\begin{itemize}
+    \item \textbf{Product Information:} \textit{brand}, \textit{model\_name}, \textit{category}, \textit{gender}, \textit{size}, and \textit{color}.
+    
+    \item \textbf{Pricing Information:} \textit{base\_price\_usd}, \textit{discount\_percent}, and \textit{final\_price\_usd}.
+    
+    \item \textbf{Customer Information:} \textit{customer\_income\_level}, \textit{customer\_rating}, and \textit{country}.
+    
+    \item \textbf{Sales Channel Information:} \textit{sales\_channel} and \textit{payment\_method}.
+    
+    \item \textbf{Financial Metrics:} \textit{revenue\_usd}, which is related to \textit{units\_sold} and \textit{final\_price\_usd}.
+\end{itemize}
+
+The target variable is \textit{units\_sold}, a discrete numerical variable representing the number of products purchased per transaction. Although integer-valued, it is treated as a regression target because it reflects product demand.
+
+Overall, the dataset contains mixed numerical and categorical features with moderate dimensionality, making it appropriate for supervised regression models.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.3. Attributes description
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Attributes description}
+
+Table~\ref{tab:attributes} summarizes the main characteristics of each feature. Overall, the dataset is composed of 18 features, including 11 categorical and 8 numerical variables. The target variable, \textit{units\_sold}, is discrete and assumes integer values ranging from 1 to 4.
+
+\begin{longtable}{|>{\bfseries}p{0.5cm}|>{\bfseries}p{2.0cm}|p{4cm}|p{3cm}|p{4cm}|}
+
+\caption{Attributes in the Global Sports Footwear Market}
+\label{tab:attributes} \\
+
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Description} & \textbf{Type} & \textbf{Possible Values} \\
+\hline
+\endfirsthead
+
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Description} & \textbf{Type} & \textbf{Possible Values} \\
+\hline
+\endhead
+
+\hline
+\endfoot
+
+\hline
+\endlastfoot
+
+1 & Order ID & Unique ID for each sale & Categorical (Ordinal) & ORD100000 to ORD129999 \\
+\hline
+2 & Order Date & Date when the order was placed & Categorical (Nominal) & 01/01/2018 to 12/31/2026 \\
+\hline
+3 & Brand & Brand of the product sold & Categorical (Nominal) & Nike, Adidas, Puma, Reebok, ASICS, New Balance \\
+\hline
+4 & Model Name & Specific model of the shoe & Categorical (Nominal) & Mod-100 to Mod-999 \\
+\hline
+5 & Category & Sport activity in which the footwear will be used & Categorical (Nominal) & Running, Training, Basketball, Lifestyle, Gym \\
+\hline
+6 & Gender & Target gender for the product & Categorical (Nominal) & Male, Female, Unisex \\
+\hline
+7 & Size & Size of the product & Numerical (Discrete) & 6 to 11 \\
+\hline
+8 & Color & Color of the product & Categorical (Nominal) & Red, Blue, Black, White, Grey \\
+\hline
+9 & Base Price (USD) & Price before discount (Original price) & Numerical (Continuous) & 60.0 to 219.0 \\
+\hline
+10 & Discount Percent & Discount applied & Numerical (Discrete) & 0\% to 30\% \\
+\hline
+11 & Final Price & Price after discount & Numerical (Continuous) & 42.0 to 219.0 \\
+\hline
+12 & Units Sold & Number of units sold & Numerical (Discrete) & 1 to 4 \\
+\hline
+13 & Revenue (USD) & Total revenue generated & Numerical (Continuous) & 42.0 to 876.0 \\
+\hline
+14 & Payment Method & Method of payment used & Categorical (Nominal) & Card, Cash, Wallet, Bank Transfer \\
+\hline
+15 & Sales Channel & Where the sale happened & Categorical (Nominal) & Online, Retail Store \\
+\hline
+16 & Country & Country of sale & Categorical (Nominal) & USA, UK, India, Germany, UAE, Pakistan \\
+\hline
+17 & Customer Income Level & Income bracket of customer & Categorical (Ordinal) & Low, Medium, High \\
+\hline
+18 & Customer Rating & Average rating given by customer & Numerical (Continuous) & 3.0 to 5.0 \\
+\hline
+
+\end{longtable}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2.4. Statistical analysis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Statistical analysis}
+
+The dataset contains 30,000 records and 18 attributes. The analysis is therefore divided into numerical and categorical perspectives, using Python \footnote{\url{https://colab.research.google.com/drive/1g1eIO1kwRSmHdVFq0CkI0VWVZmeMzZSn?usp=sharing}} as primary analytical tool.
+
+% 2.4.1. Numerical variables
+
+\subsubsection{Numerical Variables}
+
+For the numerical attributes, descriptive statistics were calculated, including measures of central tendency (mean, median) dispersion (standard deviation, minimum, maximum), and skewness inferred from the relative position of mean and median. Table~\ref{tab:statistics_numeric} summarizes these findings.
+
+\begin{table}[H]
+\centering
+\caption{Descriptive statistics of the numeric attributes}
+\label{tab:statistics_numeric}
+
+\begin{tabular}{
+|>{\bfseries}c
+|>{\bfseries}p{3cm}
+|S[table-format=3.6]
+|S[table-format=3.1]
+|S[table-format=3.6]
+|S[table-format=3.1]
+|S[table-format=3.1]|}
+\hline
+\textbf{\#} & \textbf{Attribute} & \textbf{Mean} & \textbf{Median} & \textbf{Std} & \textbf{Min} & \textbf{Max} \\
+\hline
+1 & Size & 8.500867 & 9.0 & 1.710896 & 6.0 & 11.0 \\
+\hline
+2 & Base Price (USD) & 139.634633 & 140.0 & 46.062549 & 60.0 & 219.0 \\
+\hline
+3 & Discount Percent & 13.332167 & 10.0 & 9.864198 & 0.0 & 30.0 \\
+\hline
+4 & Final Price (USD) & 121.029035 & 119.2 & 42.511586 & 42.0 & 219.0 \\
+\hline
+5 & Units Sold & 2.500200 & 3.0 & 1.121149 & 1.0 & 4.0 \\
+\hline
+6 & Revenue (USD) & 302.714948 & 268.2 & 179.149272 & 42.0 & 876.0 \\
+\hline
+7 & Customer Rating & 4.001543 & 4.0 & 0.577546 & 3.0 & 5.0 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+The Figures~\ref{fig:size}--\ref{fig:customer_rating}. shows the frequency of numeric attributes. A distribution is considered \textbf{symmetric} if mean $\approx$ median $\approx$ mode; \textbf{positively skewed} (right-skewed) if mean $>$ median; \textbf{negatively skewed} (left-skewed) if mean $<$ median \cite{geeksforgeeks_skewness_2024}.
+
+\paragraph{Size}
+The Figure~\ref{fig:size} shows a distribution close to being symmetric. The mean (8.50) is slightly lower than the median (9.00), suggesting a mild negative skewed. The relatively low standard deviation (1.71) and narrow range (6 to 11) indicate limited variability.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/size_analysis.png}
+    \caption{Distribution of Size visualized with a histogram (left) and a box plot (right).}
+    \label{fig:size}
+\end{figure}
+
+\paragraph{Base Price (USD)}
+You can see in the following Figure~\ref{fig:base_price} an approximately symmetric distribution, also the closeness of mean (139.63) and median (140.00) indicates no strong skewness.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/base_price_usd_analysis.png}
+    \caption{Distribution of Base Price visualized with a histogram (left) and a box plot (right).}
+    \label{fig:base_price}
+\end{figure}
+
+\paragraph{Discount Percent}
+The mean (13.33) is greater than median (10.00) indicates a positively skewed. As shown in Figure~\ref{fig:discount_percent}, the difference is not clearly visible on the histogram; however, the boxplot reveals that more data extend from the median to the upper limit.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/discount_percent_analysis.png}
+    \caption{Distribution of Discount Percent visualized with a histogram (left) and a box plot (right).}
+    \label{fig:discount_percent}
+\end{figure}
+
+
+\paragraph{Final Price (USD)}
+The mean (121.03) is slightly greater than median (119.20), so we can say that it is a slight positive skewness, and we can verify this by looking the Histogram at Figure~\ref{fig:final_price}.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/final_price_usd_analysis.png}
+    \caption{Distribution of Final Price visualized with a histogram (left) and a box plot (right).}
+    \label{fig:final_price}
+\end{figure}
+
+\paragraph{Units Sold}
+Although the mean (2.50) is slightly lower than the median (3.00), suggesting negative skew, this variable only takes integer values between 1 and 4. The low variability and restricted range indicate that sales volume per product is highly concentrated.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/units_sold_analysis.png}
+    \caption{Distribution of Units sold visualized with a histogram (left) and a box plot (right).}
+    \label{fig:units_sold}
+\end{figure}
+
+\paragraph{Revenue (USD)}
+As shown in Figure~\ref{fig:revenue} indicates a positively skewed distribution, it is certain because the mean (302.71) is greater than the median (268.20). The large range (42 to 876) and high standard deviation (179.15) confirm substantial variability.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/revenue_usd_analysis.png}
+    \caption{Distribution of Revenue visualized with a histogram (left) and a box plot (right).}
+    \label{fig:revenue}
+\end{figure}
+
+
+\paragraph{Customer Rating}
+The mean (4.00) and median (4.00) are identical, indicating an approximately symmetric distribution. However, the variable is bounded between 3 and 5, limiting the possibility of extreme skewness. The relatively small standard deviation indicates low dispersion. See Figure~\ref{fig:customer_rating}.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/customer_rating_analysis.png}
+    \caption{Distribution of Customer Rating visualized with a histogram (left) and a box plot (right).}
+    \label{fig:customer_rating}
+\end{figure}
+
+
+% 2.4.2. Categorical variables
+
+\subsubsection{Categorical Variables}
+
+
+Figure~\ref{fig:brand_demand} illustrates the behavior of customer \textbf{brand preferences} between 2018 and 2026. Overall, the preferences appear relatively uniform across the different brands.
+
+However, some slight differences can be observed. In 2019, the brand \textit{ASICS} shows a noticeably higher preference compared to the other brands, while in 2025 \textit{New Balance} appears to have a slightly stronger market presence.
+
+From an analytical perspective, this behavior does not appear entirely realistic when compared to real-world market dynamics, where customer preferences and brand popularity often fluctuate more significantly over time due to trends, marketing strategies, product launches, and external economic factors.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/brand_demand_trend.png}
+    \caption{Brand demand trend over years (2028-2026).}
+    \label{fig:brand_demand}
+\end{figure}
+
+Figure~\ref{fig:top_colors} compares the \textbf{revenue} generated by different \textbf{colors} across each \textbf{category} of sport or activity. The distribution appears fairly uniform, with only minor differences between categories and colors.
+
+The lowest revenue was observed for the \textit{Gym} category with the color \textit{blue} (337.0418K), while the highest revenue corresponded to the \textit{Lifestyle} category, also with the color \textit{blue} (390.9465K). Overall, these results suggest that color and category have limited influence on revenue generation in this dataset.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.15\textwidth]{img/top_colors_category.png}
+    \caption{Top colors by category comparing revenue (USD).}
+    \label{fig:top_colors}
+\end{figure}
+
+Figure~\ref{fig:country_gender} compares \textbf{gender} preferences across each \textbf{country} based on \textbf{units sold}. Similar to previous analyses, the distribution appears relatively uniform across countries.
+
+However, it can be observed that products targeted toward women tend to have slightly higher sales in most countries, with the exception of the \textit{UK}. In contrast, \textit{unisex} products consistently show the lowest number of units sold.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.15\textwidth]{img/country_gender.png}
+    \caption{Country preferences by gender according units sold.}
+    \label{fig:country_gender}
+\end{figure}
+
+Figure~\ref{fig:payment_units} compares the \textbf{payment methods} based on the total number of \textbf{units sold}. Once again, the distribution appears uniform across all payment methods, with no significant differences observed.
+
+At this point, it is reasonable to conclude that the dataset is fully synthetic, as the lack of variability and realistic patterns across multiple analyses suggests that the data does not reflect natural consumer behavior.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/payment_units.png}
+    \caption{Payment method by total of units sold.}
+    \label{fig:payment_units}
+\end{figure}
+
+As a final comparison, Tables~\ref{tab:channel_dist}--\ref{tab:customer_income_dist} present the distributions of the remaining features. In this analysis, \textit{order\_date}, \textit{order\_id}, and \textit{model\_name} are excluded, as they are not considered relevant for the modeling process.
+
+\begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Sales channel}
+    \label{tab:channel_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Sales channel & Retail Store & 15009 & 50.03\\
+    \hline
+    2 & Sales channel & Online & 14991 & 49.97  \\
+    \hline
+    \end{tabular}
+    
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Categorical attribute distributions Customer Income Level}
+    \label{tab:customer_income_dist}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{4.5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{Category} & \textbf{Count} & \textbf{\%} \\
+    \hline
+    1 & Customer Income Level & High & 10059 & 33.53 \\
+    \hline
+    2 & Customer Income Level & Medium & 9997 & 33.32  \\
+    \hline
+    3 & Customer Income Level & Low  & 9944 & 33.15 \\
+    \hline
+    \end{tabular}
+
+\end{table}
+
+From this, we can observe that the dataset overall exhibits highly uniform distributions, which do not reflect real-world variability or consumer behavior. This suggests that the data may not accurately represent natural patterns found in practical scenarios.
+
+Based on these findings, we can formulate the hypothesis that the dataset is not well-suited for predictive modeling, as the lack of meaningful variation in the features limits the ability of the models to learn reliable relationships for prediction.
+
+
+\section{Data Preprocessing}
+
+The analysis uses a single, integrated dataset. No aggregation or integration of multiple data sources was necessary, as all relevant transactional and product information was contained within a single CSV file.
+
+Given the dataset contains 30,000 records, which is well within the computational capacity for training regression models on standard hardware, no data sampling was performed. Initial data reduction was not performed at this stage. While some features may be irrelevant, a systematic feature selection process will be applied in Section 4.4.
+
+\subsection{Data cleaning}
+
+\subsubsection{Outliers}
+
+Outliers were detected by visualizing the \textit{revenue\_usd} attribute using a box plot (Figure~\ref{fig:revenue}). Although these plots revealed some extreme values, a domain-specific analysis was conducted to assess their validity. For instance, a \textit{revenue\_usd} value of 876 may correspond to a high-volume or high-price transaction (e.g., 4 units of a \$219 shoe). Such values are not errors but rather reflect valid market behavior.
+
+Consequently, no outlier capping or removal was applied, as doing so would distort the true demand distribution. Outlier handling would only be necessary if values fell outside a realistic range, which was not observed in this case.
+
+\subsubsection{Missing data}
+A systematic check for missing values was performed using \textit{df.isnull().sum} in Python. The analysis confirmed that none of the 18 attributes contained any missing values. If missing data were present, imputation strategies would depend on the feature type: numerical features (e.g., \textit{costumer\_rating}) would be imputed using the median, while categorical features (e.g., \textit{color}) would be imputed using the mode. However, given the absence of nulls, no imputation was necessary.
+
+\section{Data transformation}
+
+\subsection{Data standardization}
+
+Normalization or standardization was not required in this stage, since the majority of the variables corresponded to categorical data. Furthermore, the feature selection methods implemented did not require standardized inputs in order to operate effectively. 
+
+On the other hand, during the subsequent Data Mining stage, the selected machine learning models were also not dependent on feature scaling, making additional standardization unnecessary for the overall workflow.
+
+\subsection{Text preprocessing}
+The dataset contains no unstructured text attributes that require preprocessing. Features such as \textit{brand}, \textit{country}, and \textit{color} are nominal categorical variables and will be handled via encoding (e.g., one-hot encoding) in the modeling pipeline, not via text vectorization.
+
+\subsection{Creation of new attributes}
+The \textit{order\_date} variable was decomposed into three new temporal features: \textit{month}, \textit{year}, and \textit{dayofweek}, in order to capture potential seasonal and weekly patterns in sales behavior.
+
+\subsection{Feature selection}
+
+Initially, the variables \textit{revenue\_usd} and \textit{final\_price\_usd} were removed because they represent redundant information directly derived from \textit{base\_price\_usd}. Likewise, \textit{order\_id} and \textit{model\_name} were excluded, as they do not provide significant predictive value and mainly correspond to consequential or identifier-type attributes.
+
+Two feature selection methods will be employed: \textbf{Pearson Correlation Coefficient} and \textbf{Mutual Information}. The Pearson Correlation Coefficient will be applied exclusively to numerical features in order to evaluate their linear relationship with the target variable. In contrast, Mutual Information will be used on both numerical and categorical features after an appropriate encoding process.
+\subsubsection{Pearson Correlation Coefficient}
+
+The Pearson correlation coefficient results indicate that most numerical features exhibit very weak linear relationships with \textit{units\_sold}. The majority of variables such as size, discount percent, final price, and customer rating show correlations close to 0, suggesting they do not have a strong linear effect on sales. The results are summarized below (Table~\ref{tab:pearson_coef}):
+
+\begin{table}[H]
+    \centering
+    \caption{Results obtained from Pearson Correlation Analysis}
+    \label{tab:pearson_coef}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{r}  \\
+    \hline
+    1 & Size & -0.002659 \\
+    \hline
+    2 & Base Price USD Level & 0.005353  \\
+    \hline
+    3 & Discount Percent & 0.005930 \\
+    \hline
+    4 & Customer Rating & -0.001177 \\
+    \hline
+    5 & Year & 0.000174 \\
+    \hline
+    6 & Month & -0.000096 \\
+    \hline
+    7 & Day of week & -0.006117 \\
+    \hline
+    \end{tabular}
+
+\end{table}
+
+
+\subsubsection{Mutual Information}
+
+The Mutual Information analysis revealed (see Table~\ref{tab:mutual_info}) generally low dependency levels between the predictor variables and the target variable (\textit{units\_sold}). The attributes with the highest Mutual Information scores were \textit{category} (0.0173), \textit{color} (0.0152), and \textit{country} (0.0114), indicating that product type, customer aesthetic preferences, and regional factors have a limited but measurable influence on sales volume.
+
+
+Most of the remaining variables obtained values close to zero, including \textit{base\_price\_usd}, \textit{discount\_percent}, \textit{customer\_rating}, and demographic attributes such as \textit{gender}. This suggests that these features do not provide significant individual predictive information regarding the number of units sold.
+
+This may imply that sales behavior is influenced by more complex interactions among variables or by external factors not included in the dataset, such as marketing campaigns, seasonal demand, product trends, or i    nventory availability. Consequently, predictive performance may depend more on combining multiple features and applying non-linear machine learning models rather than relying on single attributes independently.
+
+\begin{table}[H]
+    \centering
+    \caption{Results obtained from Mutual Information}
+    \label{tab:mutual_info}
+    
+    \begin{tabular}{
+    |>{\bfseries}c
+    |>{\bfseries}p{5cm}
+    |p{3cm}
+    |S[table-format=5.0]
+    |S[table-format=3.2]|}
+    \hline
+    \textbf{\#} & \textbf{Attribute} & \textbf{MI}  \\
+    \hline
+    1 & Category & 0.017343 \\
+    \hline
+    2 & Color & 0.015153  \\
+    \hline
+    3 & Country & 0.011370 \\
+    \hline
+    4 & Payment Method & 0.005709 \\
+    \hline
+    5 & Sales channel & 0.002739 \\
+    \hline
+    6 & Customer Income Level & 0.000905 \\
+    \hline
+    7 & Month & 0.000456 \\
+    \hline
+    8 & Brand & 0.000360 \\
+    \hline
+    9 & Base Price USD & 0.000000 \\
+    \hline
+    10 & Customer Rating & 0.000000 \\
+    \hline
+    11 & Day of week & 0.000000 \\
+    \hline
+    12 & Gender & 0.000000 \\
+    \hline
+    13 & Discount Percent & 0.000000 \\
+    \hline
+    14 & Size & 0.000000 \\
+    \hline
+    15 & Year & 0.000000 \\
+    \hline
+    
+    \end{tabular}
+
+\end{table}
+
+\subsubsection{Feature Selection Overview}
+
+Although the obtained results were relatively low, only the top eight features were considered for the subsequent stages  of the analysis (Data Mining). These consisted of seven categorical variables and one numerical variable: \textit{category}, \textit{color}, \textit{country}, \textit{payment\_method}, \textit{sales\_channel}, \textit{customer\_income\_level}, \textit{month}, and \textit{brand}.
+
+Additionally, two extra experiments were conducted in order to gain a better understanding of the unusual behavior observed in the dataset. The first experiment considered exclusively numerical features, while the second one used only categorical features.
+
+\subsection{Dimensionality reduction applying PCA}
+
+Applying the PCA algorithm only to the numerical features: \textit{size}, \textit{base\_price\_usd}, \textit{discount\_percent}, and \textit{customer\_rating}, and comparing them with the target variable \textit{units\_sold}, it can be observed in Figure~\ref{fig:pca_projection} that the information cannot be clearly separated into groups. Instead, the data appears as a uniform cluster, which suggests that PCA does not provide meaningful separation of the observations. Therefore, dimensionality reduction will not be implemented.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{img/pca_3_components.png}
+    \caption{PCA Projection with 3 components.}
+    \label{fig:pca_projection}
+\end{figure}
+
+
+\section{Data Mining}
+
+This stage focused on evaluating the predictive capability of different machine learning regression models for estimating the variable \textit{units\_sold}. As previously mentioned, three different experiments were conducted:
+\begin{enumerate}
+    \item Selected features obtained through Mutual Information
+    \item Only numerical features
+    \item Only categorical features
+\end{enumerate}
+
+The objective of these experiments was not only to identify the model with the best predictive performance, but also to better understand the underlying structure and quality of the dataset. Since the feature selection analysis revealed very weak relationships between the predictor variables and the target variable, additional experiments were necessary to evaluate whether numerical or categorical attributes contributed differently to the prediction task.
+\subsection{Models and Evaluation Metrics}
+
+Three machine learning models were implemented in order to compare their predictive performance: \textit{Decision Tree Regression}, \textit{Random Forest Regression}, and \textit{Gradient Boosting Regression}. The best hyperparameters for all models were selected using \textit{GridSearchCV} and \textit{RandomizedSearchCV}, allowing the identification of the configurations with the best predictive performance during cross-validation.
+
+The models were evaluated using the following metrics: \textit{Mean Squared Error} (MSE), \textit{Mean Absolute Error} (MAE), \textit{Coefficient of Determination} ($R^2$).
+
+\subsubsection{Decision Tree Regression}
+
+Decision Tree Regression is a supervised machine learning algorithm that predicts numerical values by recursively splitting the dataset into smaller subsets according to feature conditions. The model creates a tree-like structure where each internal node represents a decision rule, and each leaf node contains the predicted value. The objective of the algorithm is to minimize the prediction error within each partition of the data \cite{decision_tree_medium}. 
+
+In this work, the best Decision Tree configurations were obtained using \textit{GridSearchCV}, which evaluated different combinations of hyperparameters such as \textit{max\_depth}, \textit{min\_samples\_split}, and \textit{min\_samples\_leaf} through cross-validation.
+
+\subsubsection{Random Forest Regression}
+
+Random Forest Regression is an ensemble learning method that combines multiple decision trees to improve prediction accuracy and reduce overfitting. Each tree is trained using a random subset of the data and features, and the final prediction is calculated as the average prediction of all trees in the forest. This approach increases model robustness and generalization capability \cite{ibm_random_forest}.
+
+For this study, the best Random Forest configurations were selected using \textit{RandomizedSearchCV}, which explored different combinations of hyperparameters such as the number of estimators and tree depth through randomized sampling and cross-validation.
+
+\subsubsection{Gradient Boosting Regression}
+
+Gradient Boosting Regression is an ensemble machine learning technique that builds models sequentially, where each new model attempts to reduce the prediction errors made by the previous models. Unlike Random Forest, which builds trees independently, Gradient Boosting combines weak learners iteratively in order to minimize a specified loss function. This approach often improves predictive accuracy and model generalization \cite{ibm_gradient_boosting}.
+
+In this study, the best Gradient Boosting configurations were obtained using \textit{RandomizedSearchCV}, evaluating combinations of hyperparameters such as \textit{n\_estimators}, \textit{learning\_rate}, \textit{max\_depth}, \textit{min\_samples\_split}, and \textit{min\_samples\_leaf} through randomized sampling and cross-validation.
+
+\subsubsection{Evaluation Metrics}
+
+\paragraph{Mean Absolute Error (MAE)}
+
+MAE measures the average absolute difference between the predicted and actual values. Lower values indicate better predictive performance \cite{metrics_medium}.
+
+\[
+MAE = \frac{1}{n}\sum_{i=1}^{n}|y_i - \hat{y}_i|
+\]
+
+\paragraph{Mean Squared Error (MSE)}
+
+MSE calculates the average squared difference between predicted and actual values. This metric penalizes larger errors more strongly due to the squared term \cite{metrics_medium}.
+
+\[
+MSE = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)^2
+\]
+
+\paragraph{Coefficient of Determination ($R^2$)}
+
+The coefficient of determination measures how well the model explains the variance of the target variable. Values closer to 1 indicate better model performance \cite{metrics_medium}.
+
+\[
+R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
+\]
+
+\subsection{Experiment 1: Mutual Information Selected Features}
+
+This experiment used the features selected through Mutual Information analysis: \textit{category}, \textit{color}, \textit{country}, \textit{payment\_method}, \textit{sales\_channel}, \textit{customer\_income\_level}, \textit{month}, and \textit{brand}. The resulting values are in Table~\ref{tab:experiment_1}.
+
+\subsubsection{Decision Tree Regression}
+
+The best model found using \textit{GridSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{DecisionTreeRegressor(max\_depth=5, random\_state=42)}
+\end{itemize}
+
+The model achieved a slightly better performance compared to Random Forest in terms of $R^2$ and MSE, although both models obtained negative $R^2$ values, indicating limited predictive capability.
+
+\subsubsection{Random Forest Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{RandomForestRegressor(max\_depth=10, random\_state=42)}
+\end{itemize}
+
+The Random Forest model produced results similar to the Decision Tree model, but with slightly higher prediction error values.
+
+\subsubsection{Gradient Boosting Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{GradientBoostingRegressor(learning\_rate=0.05, max\_depth=5, min\_samples\_split=5, random\_state=42)}
+\end{itemize}
+
+The Gradient Boosting model achieved performance values comparable to the Decision Tree and Random Forest models. Although the model slightly improved MSE compared to Random Forest, the overall $R^2$ score remained negative, indicating limited predictive performance for this feature configuration.
+
+\begin{table}[H]
+\centering
+\caption{Comparing performance using mutual information selected features}
+\label{tab:experiment_1}
+
+\begin{tabular}{
+|>{\bfseries}c
+|>{\bfseries}p{4cm}
+|S[table-format=-1.6]
+|S[table-format=1.6]
+|S[table-format=1.6]|}
+\hline
+\textbf{\#} &
+\textbf{Model} &
+{\textbf{$R^2$}} &
+{\textbf{MAE}} &
+{\textbf{MSE}} \\
+\hline
+1 & Decision Tree & -0.003907 & 1.003063 & 1.261113 \\
+\hline
+2 & Random Forest & -0.011245 & 1.004009 & 1.270331 \\
+\hline
+3 & Gradient Boosting & -0.008474 & 1.004081 & 1.266850 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{Experiment 2: Numerical Features Only}
+
+This experiment considered only numerical features: \textit{size}, \textit{base\_price\_usd}, \textit{customer\_rating}, \textit{month}, \textit{dayofweek}, and \textit{year}. We can see the performance of each model in Table~\ref{tab:experiment_2}.
+
+\subsubsection{Decision Tree Regression}
+
+The best model found using \textit{GridSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{DecisionTreeRegressor(max\_depth=5, min\_samples\_leaf=5, random\_state=42)}
+\end{itemize}
+
+The Decision Tree model obtained slightly lower MSE values compared to Random Forest, although both models showed similar predictive behavior.
+
+\subsubsection{Random Forest Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{RandomForestRegressor(max\_depth=10, random\_state=42)}
+\end{itemize}
+
+The Random Forest model achieved a marginally lower MAE value compared to the Decision Tree model.
+
+\subsubsection{Gradient Boosting Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{GradientBoostingRegressor(learning\_rate=0.05, max\_depth=5, min\_samples\_split=5, random\_state=42)}
+\end{itemize}
+
+The Gradient Boosting model obtained the best overall performance among the evaluated models in this experiment, achieving the highest $R^2$ score and the lowest MAE and MSE values.
+
+\begin{table}[H]
+\centering
+\caption{Comparing performance using only numerical features}
+\label{tab:experiment_2}
+
+\begin{tabular}{
+|>{\bfseries}c
+|>{\bfseries}p{4cm}
+|S[table-format=-1.6]
+|S[table-format=1.6]
+|S[table-format=1.6]|}
+\hline
+\textbf{\#} &
+\textbf{Model} &
+{\textbf{$R^2$}} &
+{\textbf{MAE}} &
+{\textbf{MSE}} \\
+\hline
+1 & Decision Tree & -0.007564 & 1.003361 & 1.265707 \\
+\hline
+2 & Random Forest & -0.007957 & 1.002845 & 1.266201 \\
+\hline
+3 & Gradient Boosting & -0.004274 & 1.001945 & 1.261575 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{Experiment 3: Categorical Features Only}
+
+This experiment used only categorical features: \textit{gender}, \textit{country}, \textit{brand}, \textit{category}, and \textit{sales\_channel}. The comparison for this case is in Table~\ref{tab:experiment_3}.
+
+\subsubsection{Decision Tree Regression}
+
+The best model found using \textit{GridSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{DecisionTreeRegressor(max\_depth=5, random\_state=42)}
+\end{itemize}
+
+The Decision Tree model obtained the best overall $R^2$ and MSE values among the evaluated models in this experiment.
+
+\subsubsection{Random Forest Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{RandomForestRegressor(max\_depth=10, random\_state=42)}
+\end{itemize}
+
+Although the Random Forest model achieved the lowest MAE value, its overall $R^2$ and MSE values were slightly worse compared to the Decision Tree model.
+
+\subsubsection{Gradient Boosting Regression}
+
+The best model found using \textit{RandomizedSearchCV} for this experiment was:
+
+\begin{itemize}
+    \item \texttt{GradientBoostingRegressor(learning\_rate=0.05, max\_depth=5, min\_samples\_split=5, random\_state=42)}
+\end{itemize}
+
+The Gradient Boosting model achieved the best overall performance in this experiment, obtaining the highest $R^2$ score and the lowest MAE and MSE values among all evaluated models.
+
+\begin{table}[H]
+\centering
+\caption{Comparing performance using only categorical features}
+\label{tab:experiment_3}
+
+\begin{tabular}{
+|>{\bfseries}c
+|>{\bfseries}p{4cm}
+|S[table-format=-1.6]
+|S[table-format=1.6]
+|S[table-format=1.6]|}
+\hline
+\textbf{\#} &
+\textbf{Model} &
+{\textbf{$R^2$}} &
+{\textbf{MAE}} &
+{\textbf{MSE}} \\
+\hline
+1 & Decision Tree & -0.002182 & 1.002711 & 1.258946 \\
+\hline
+2 & Random Forest & -0.011280 & 1.002084 & 1.270375  \\
+\hline
+3 & Gradient Boosting & -0.001987 & 1.001815 & 1.258701 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+When comparing the three experiments, it became evident that the dataset does not provide sufficiently informative features to accurately predict \textit{unit\_sold}. Since the dataset is synthetic, the process used to generate the data may not preserve strong relationships between the input variables and the target variable.
+
+Among the evaluated approaches, the experiment using only categorical features produced slightly better results, showing a small reduction in prediction error. However, the improvement was marginal, and the overall performance of the models remained poor. In particular, the consistently negative $R^2$ values across all experiments indicate that the models were unable to capture meaningful predictive patterns from the available features.
+
+These results are consistent with the findings obtained during the feature selection stage using Pearson Correlation and Mutual Information. In both analyses, the relationships between the selected attributes and the target variable \textit{units\_sold} were weak. Nevertheless, conducting these experiments was useful for gaining a deeper understanding of the dataset’s behavior and the limitations of the available features for regression tasks.
+
+\section{Future Work}
+
+Several improvements can be explored in future work in order to obtain more realistic and accurate demand prediction results.
+
+First, a more representative dataset should be used. Since the current dataset appears to be synthetic and highly uniform, future studies should incorporate real-world transactional data containing stronger relationships between customer behavior, pricing strategies, seasonality, and product demand.
+
+Second, additional features could be incorporated to improve the predictive capability of the models. Variables related to marketing campaigns, social media trends, inventory availability, economic indicators, customer purchase history, and seasonal events may provide valuable information for explaining fluctuations in product demand.
+
+Another possible improvement involves experimenting with more advanced machine learning and deep learning approaches. Models such as XGBoost, LightGBM, CatBoost, or neural networks may capture more complex non-linear relationships among variables. Ensemble approaches combining multiple models could also be explored.
+
+
+\section{Final comments}
+
+At the beginning of the project, it was not completely clear whether the implemented dataset was synthetic. After performing the statistical analysis, it became evident that the dataset was artificially generated, since most feature distributions were extremely uniform and lacked realistic variability. This behavior does not accurately reflect real-world market conditions or natural consumer purchasing patterns.
+
+When implementing to perform feature extraction in order to identify which variables had the greatest influence on predicting the target variable \textit{units\_sold}, the obtained values were very low for both the Pearson Correlation Coefficient and Mutual Information analyses. These results indicated that the quality of the features was poor, since most variables showed almost no relationship with the target variable.
+
+Additionally, dimensionality reduction using PCA was explored to better understand the structure of the data. However, when projecting the observations into three principal components, the resulting visualization produced a highly uniform cluster without any clear group separation. This confirmed that the dataset lacked meaningful internal structure and discriminative patterns.
+
+At this stage, the modeling results became expected. The three evaluated models --- \textit{Decision Tree Regression}, \textit{Random Forest Regression}, and \textit{Gradient Boosting Regression} --- produced poor predictive performance across all evaluation metrics: MAE, MSE, and $R^2$. The prediction errors remained relatively high (above 1), while the $R^2$ values were consistently negative, indicating that the models performed worse than a simple baseline predictor.
+
+Although three different experimental configurations were tested --- using features selected by Mutual Information, only numerical features, and only categorical features --- all approaches produced similarly weak results.
+
+One important question that it was asked from this work is: \textit{How could the regression results be improved?}
+
+The first aspect that should be improved is the quality and diversity of the features. Since the dataset contains highly uniform distributions, the predictive models have very limited information from which to learn meaningful patterns. Incorporating additional numerical and categorical variables could significantly improve the realism and predictive capability of the dataset. For example:
+
+\begin{itemize}
+    \item Seasonal demand variables (holidays, special events, sports seasons)
+    \item Marketing campaign information and advertising investment
+    \item Customer behavioral variables such as purchase history
+    \item Product popularity trends and social media influence
+    \item Inventory availability and stock limitations
+    \item Economic indicators such as inflation or purchasing power
+    \item Competitor pricing and promotional activity
+\end{itemize}
+
+Real-world demand prediction problems are strongly influenced by complex interactions between pricing, promotions, seasonality, customer preferences, and market trends. Therefore, future versions of the dataset should attempt to simulate these dependencies more accurately.
+
+Overall, despite the poor predictive performance obtained in this study, the project was valuable for understanding the complete KDD process, including data preprocessing, feature selection, dimensionality reduction, model training, hyperparameter optimization, and evaluation.
+
+
+\subsection*{Code Availability}
+The complete implementation and experiments are available at:
+\url{https://colab.research.google.com/drive/1g1eIO1kwRSmHdVFq0CkI0VWVZmeMzZSn?usp=sharing}
+
+% References
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
 
 % Graphics and figures
 \usepackage{graphicx}
