@@ -5,6 +5,7 @@ env/
 .venv/
 env.bak/
 *.egg-info/
+.vscode/
 
 # Archivos
 *.py[cod]
